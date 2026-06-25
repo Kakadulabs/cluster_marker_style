@@ -20,6 +20,8 @@ dependencies:
   # does not do the clustering or own the map.
   google_maps_flutter: ">=2.9.0 <3.0.0"
   google_maps_cluster_manager_2: ">=3.0.0 <4.0.0"
+  # Alternative clustering algorithm demonstrated in lib/fluster_example.dart.
+  fluster: ">=1.2.0 <2.0.0"
 
 dev_dependencies:
   flutter_test:

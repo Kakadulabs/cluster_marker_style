@@ -170,6 +170,28 @@ clustering package. The `google_maps_cluster_manager_2` bridge lives in a
 separate library
 (`package:cluster_marker_style/cluster_marker_style_gmcm.dart`).
 
+There's also a **`fluster` adapter**
+(`package:cluster_marker_style/cluster_marker_style_fluster.dart`). fluster only
+runs the clustering *algorithm* — it hands back a flat list where `isCluster`
+marks an aggregate and gives you no rendering at all — so `flusterMarkers(...)`
+styles + caches those aggregates and delegates individual points to your builder:
+
+```dart
+import 'package:cluster_marker_style/cluster_marker_style_fluster.dart';
+
+final markers = await flusterClusterMarkers<MapMarker>(
+  fluster: fluster,
+  bounds: [westLng, southLat, eastLng, northLat],
+  zoom: zoom.round(),
+  renderer: clusterRenderer,
+  devicePixelRatio: MediaQuery.of(context).devicePixelRatio,
+  pointMarkerBuilder: (p) async => Marker(
+    markerId: MarkerId(p.markerId!),
+    position: LatLng(p.latitude!, p.longitude!),
+  ),
+);
+```
+
 **More clustering-tool adapters are planned** (e.g. for `flutter_map` clustering
 tools). Because the core is independent, new adapters are thin bridges that don't
 touch it.
@@ -181,7 +203,11 @@ Core (`cluster_marker_style.dart`): `ClusterStyle` (+ `.soft`/`.flat`/`.outlined
 `ClusterShadow`, `CountFormatter` (+ `DefaultCountFormatter`), `ClusterRenderer`,
 `ClusterIconCache`, `ClusterCacheKey`, and the `tierFor` / `sizeFor` helpers.
 
-Adapter (`cluster_marker_style_gmcm.dart`): `clusterMarkerBuilder(...)`.
+Adapters:
+- `cluster_marker_style_gmcm.dart` → `clusterMarkerBuilder(...)` for
+  `google_maps_cluster_manager_2`.
+- `cluster_marker_style_fluster.dart` → `flusterMarkers(...)` /
+  `flusterClusterMarkers(...)` for `fluster`.
 
 ## License
 

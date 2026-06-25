@@ -6,8 +6,9 @@
 /// clustering algorithm.
 ///
 /// Importing this library does **not** pull in any specific clustering package.
-/// For the `google_maps_cluster_manager_2` one-line adapter, import
-/// `package:cluster_marker_style/cluster_marker_style_gmcm.dart` instead.
+/// For a clustering adapter, import one of the bridge libraries instead:
+/// `cluster_marker_style_gmcm.dart` (google_maps_cluster_manager_2) or
+/// `cluster_marker_style_fluster.dart` (fluster).
 library;
 
 // Style (data layer)

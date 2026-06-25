@@ -1,3 +1,15 @@
+## 0.2.0
+
+- Add a `fluster` adapter (`package:cluster_marker_style/cluster_marker_style_fluster.dart`):
+  `flusterMarkers(...)` and `flusterClusterMarkers(...)` turn
+  `Fluster.clusters(bbox, zoom)` results into styled, cached map markers. fluster
+  supplies only the clustering algorithm; this package renders the cluster icons.
+- Cluster markers from both adapters are now center-anchored
+  (`Offset(0.5, 0.5)`), so the bubble sits on the cluster location instead of
+  above it.
+- Example app gains a runnable fluster demo
+  (`flutter run -t lib/fluster_example.dart`).
+
 ## 0.1.0
 
 Initial release.

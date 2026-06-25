@@ -1,3 +1,5 @@
+import 'dart:ui' show Offset;
+
 import 'package:google_maps_cluster_manager_2/google_maps_cluster_manager_2.dart';
 // google_maps_flutter also exports a `Cluster` type (native clustering); hide
 // it so `Cluster` unambiguously means the cluster-manager's cluster.
@@ -50,6 +52,9 @@ ClusterMarkerBuilder<T> clusterMarkerBuilder<T extends ClusterItem>({
       markerId: MarkerId(cluster.getId()),
       position: cluster.location,
       icon: icon,
+      // Center the bubble on the cluster location (markers default to a
+      // bottom-anchored pin).
+      anchor: const Offset(0.5, 0.5),
       onTap: onTap == null ? null : () => onTap(cluster),
     );
   };
