@@ -1,0 +1,13 @@
+include: package:flutter_lints/flutter.yaml
+
+analyzer:
+  language:
+    strict-casts: true
+    strict-raw-types: true
+
+linter:
+  rules:
+    # Encourage const usage in this paint-heavy, allocation-sensitive package.
+    prefer_const_constructors: true
+    prefer_const_constructors_in_immutables: true
+    prefer_final_locals: true

@@ -1,0 +1,23 @@
+# This package is not (yet) a git repo, so `.gitignore` isn't applied at publish
+# time. Exclude build artifacts, tooling, and local secrets explicitly so the
+# published archive stays small and never carries machine-local files.
+
+# Tooling / IDE
+.idea/
+*.iml
+.dart_tool/
+build/
+
+# Example: build artifacts & generated tooling (source is kept)
+example/build/
+example/.dart_tool/
+example/.gradle/
+example/android/.gradle/
+example/.flutter-plugins
+example/.flutter-plugins-dependencies
+
+# Example: machine-local / secret files
+example/android/local.properties
+example/android/secrets.properties
+example/ios/Pods/
+example/ios/.symlinks/
