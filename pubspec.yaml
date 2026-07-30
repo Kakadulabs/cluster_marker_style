@@ -7,6 +7,12 @@ homepage: https://www.kakadulabs.com
 repository: https://github.com/Kakadulabs/cluster_marker_style
 issue_tracker: https://github.com/Kakadulabs/cluster_marker_style/issues
 
+topics:
+  - maps
+  - google-maps
+  - markers
+  - clustering
+
 environment:
   sdk: ">=3.4.0 <4.0.0"
   flutter: ">=3.22.0"
