@@ -104,7 +104,7 @@ Add the dependencies:
 
 ```yaml
 dependencies:
-  cluster_marker_style: ^0.1.0
+  cluster_marker_style: ^0.3.0
   google_maps_flutter: ^2.9.0
   google_maps_cluster_manager_2: ^3.0.0
 ```

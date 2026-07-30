@@ -24,7 +24,8 @@ class ClusterRenderer {
   /// The style this renderer draws.
   final ClusterStyle style;
 
-  /// The icon cache. A default unbounded cache is created if none is supplied.
+  /// The icon cache. A default one (capped at
+  /// [kDefaultClusterIconCacheSize] entries) is created if none is supplied.
   final ClusterIconCache cache;
 
   /// Returns a (cached) `BitmapDescriptor` for [count] at [devicePixelRatio].
@@ -87,8 +88,7 @@ class ClusterRenderer {
     if (shadow != null) {
       final paint = ui.Paint()
         ..color = shadow.color
-        ..maskFilter =
-            ui.MaskFilter.blur(ui.BlurStyle.normal, _sigmaForBlur(shadow.blur));
+        ..maskFilter = ui.MaskFilter.blur(ui.BlurStyle.normal, shadow.sigma);
       canvas.drawCircle(center + shadow.offset, radius, paint);
     }
 
@@ -182,7 +182,4 @@ class ClusterRenderer {
     // uniformly across Android, iOS, and web by the plugin.
     return BitmapDescriptor.bytes(bytes, imagePixelRatio: devicePixelRatio);
   }
-
-  // Matches Flutter's BoxShadow blur-radius -> Gaussian sigma conversion.
-  static double _sigmaForBlur(double blur) => blur * 0.57735 + 0.5;
 }

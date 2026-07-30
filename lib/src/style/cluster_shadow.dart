@@ -21,10 +21,20 @@ class ClusterShadow {
   /// Shadow offset in logical px.
   final Offset offset;
 
+  /// The Gaussian sigma [blur] maps to at paint time.
+  ///
+  /// Matches Flutter's `BoxShadow.blurRadius` -> sigma conversion, so a
+  /// [ClusterShadow] and a `BoxShadow` with the same blur look alike.
+  double get sigma => blur * 0.57735 + 0.5;
+
   /// Maximum distance (logical px) the shadow extends beyond the shape's
   /// bounds. The renderer inflates the canvas by this amount so the shadow is
   /// never clipped.
-  double get extent => blur + offset.distance;
+  ///
+  /// A Gaussian is visually finished at about 3 sigma — noticeably further than
+  /// [blur] itself — so the reach is `3 * sigma` plus however far [offset]
+  /// pushes the shadow off-center.
+  double get extent => 3 * sigma + offset.distance;
 
   ClusterShadow copyWith({Color? color, double? blur, Offset? offset}) {
     return ClusterShadow(

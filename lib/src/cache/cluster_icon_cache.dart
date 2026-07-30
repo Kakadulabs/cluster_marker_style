@@ -64,6 +64,15 @@ class ClusterCacheKey {
   int get hashCode => Object.hash(style, tier, label, diameterKey, dprKey);
 }
 
+/// Default entry cap for a [ClusterIconCache].
+///
+/// A style produces only as many entries as it has distinct visual outcomes, so
+/// a few hundred covers normal use with room to spare. The cap exists so that
+/// inputs which *do* keep producing new outcomes — a changing device pixel
+/// ratio, a custom `CountFormatter` that emits a unique label per count — can't
+/// grow the cache without bound over a long session.
+const int kDefaultClusterIconCacheSize = 256;
+
 /// In-memory cache of rendered cluster icons.
 ///
 /// This is the single most important feature for a smooth map: without it,
@@ -71,12 +80,16 @@ class ClusterCacheKey {
 /// stores the build [Future] (not just the result), so a burst of identical
 /// requests during a fast pan all await one rasterization.
 ///
-/// Pass [maxSize] to cap the number of cached entries with simple
-/// least-recently-used eviction. Leave it null for an unbounded cache (fine for
-/// most apps — there are only as many entries as distinct visual outcomes).
+/// Holds up to [kDefaultClusterIconCacheSize] entries by default, evicting the
+/// least recently used beyond that. Pass [maxSize] for a different cap, or use
+/// [ClusterIconCache.unbounded] to disable eviction entirely.
 class ClusterIconCache {
-  ClusterIconCache({this.maxSize})
+  ClusterIconCache({this.maxSize = kDefaultClusterIconCacheSize})
       : assert(maxSize == null || maxSize > 0, 'maxSize must be positive');
+
+  /// A cache that never evicts. Only sensible when the set of distinct visual
+  /// outcomes is known to be small and bounded.
+  ClusterIconCache.unbounded() : maxSize = null;
 
   /// Maximum number of entries before LRU eviction kicks in. Null = unbounded.
   final int? maxSize;
@@ -93,11 +106,9 @@ class ClusterIconCache {
   }) {
     final existing = _entries[key];
     if (existing != null) {
-      if (maxSize != null) {
-        // Mark most-recently-used.
-        _entries.remove(key);
-        _entries[key] = existing;
-      }
+      // Mark most-recently-used by re-inserting at the end.
+      _entries.remove(key);
+      _entries[key] = existing;
       return existing;
     }
 

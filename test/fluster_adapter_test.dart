@@ -59,6 +59,44 @@ void main() {
     });
   });
 
+  testWidgets('markers come back in the order the items were given',
+      (tester) async {
+    await tester.runAsync(() async {
+      final items = <_Item>[
+        _Item(
+            latitude: 0,
+            longitude: 0,
+            isCluster: true,
+            clusterId: 1,
+            pointsSize: 5),
+        _Item(latitude: 1, longitude: 1, markerId: 'p1'),
+        _Item(
+            latitude: 2,
+            longitude: 2,
+            isCluster: true,
+            clusterId: 2,
+            pointsSize: 500),
+        _Item(latitude: 3, longitude: 3, markerId: 'p2'),
+      ];
+
+      final markers = await flusterMarkers<_Item>(
+        items: items,
+        renderer: ClusterRenderer(ClusterStyle.soft()),
+        devicePixelRatio: 2,
+        pointMarkerBuilder: (p) async => Marker(
+          markerId: MarkerId(p.markerId!),
+          position: LatLng(p.latitude!, p.longitude!),
+        ),
+      );
+
+      // Clusters render concurrently; order must still track the input.
+      expect(
+        markers.map((m) => m.markerId.value).toList(),
+        <String>['cluster_1', 'p1', 'cluster_2', 'p2'],
+      );
+    });
+  });
+
   testWidgets('a point item is not treated as a cluster', (tester) async {
     await tester.runAsync(() async {
       final renderer = ClusterRenderer(ClusterStyle.flat());

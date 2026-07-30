@@ -89,6 +89,51 @@ void main() {
       expect(cache.length, 2);
     });
 
+    test('a cache hit refreshes the entry, so the untouched one is evicted',
+        () async {
+      final cache = ClusterIconCache(maxSize: 2);
+      final a = keyOf(label: 'a');
+      final b = keyOf(label: 'b');
+
+      await cache.getOrCreate(key: a, build: stub);
+      await cache.getOrCreate(key: b, build: stub);
+      // Touch 'a' so 'b' becomes the least recently used.
+      await cache.getOrCreate(key: a, build: stub);
+      await cache.getOrCreate(key: keyOf(label: 'c'), build: stub);
+
+      var rebuilds = 0;
+      Future<BitmapDescriptor> counting() async {
+        rebuilds++;
+        return BitmapDescriptor.defaultMarker;
+      }
+
+      await cache.getOrCreate(key: a, build: counting);
+      expect(rebuilds, 0,
+          reason: 'a was touched, so it should still be cached');
+      await cache.getOrCreate(key: b, build: counting);
+      expect(rebuilds, 1, reason: 'b was the LRU entry and should be evicted');
+    });
+
+    test('is capped by default', () async {
+      final cache = ClusterIconCache();
+      expect(cache.maxSize, kDefaultClusterIconCacheSize);
+
+      for (var i = 0; i < kDefaultClusterIconCacheSize + 50; i++) {
+        await cache.getOrCreate(key: keyOf(label: '$i'), build: stub);
+      }
+      expect(cache.length, kDefaultClusterIconCacheSize);
+    });
+
+    test('unbounded never evicts', () async {
+      final cache = ClusterIconCache.unbounded();
+      expect(cache.maxSize, isNull);
+
+      for (var i = 0; i < kDefaultClusterIconCacheSize + 50; i++) {
+        await cache.getOrCreate(key: keyOf(label: '$i'), build: stub);
+      }
+      expect(cache.length, kDefaultClusterIconCacheSize + 50);
+    });
+
     test('clear empties the cache', () async {
       final cache = ClusterIconCache();
       await cache.getOrCreate(key: keyOf(label: '1'), build: stub);

@@ -7,7 +7,8 @@ void main() {
     await tester.runAsync(() async {
       final renderer = ClusterRenderer(ClusterStyle.soft());
 
-      final descriptor = await renderer.bitmapFor(count: 7, devicePixelRatio: 2);
+      final descriptor =
+          await renderer.bitmapFor(count: 7, devicePixelRatio: 2);
       expect(descriptor, isA<BitmapDescriptor>());
       expect(renderer.cache.length, 1);
 

@@ -2,7 +2,7 @@ name: cluster_marker_style
 description: >-
   Beautiful, count-aware, cached cluster marker icons for Google Maps. A
   drop-in styling/rendering layer for any map clustering algorithm.
-version: 0.2.0
+version: 0.3.0
 homepage: https://www.kakadulabs.com
 repository: https://github.com/Kakadulabs/cluster_marker_style
 issue_tracker: https://github.com/Kakadulabs/cluster_marker_style/issues

@@ -30,36 +30,49 @@ typedef FlusterPointMarkerBuilder<T extends Clusterable> = Future<Marker>
 ///   ),
 /// );
 /// ```
+///
+/// Markers are built concurrently and returned in the order [items] were given.
 Future<List<Marker>> flusterMarkers<T extends Clusterable>({
   required List<T> items,
   required ClusterRenderer renderer,
   required double devicePixelRatio,
   required FlusterPointMarkerBuilder<T> pointMarkerBuilder,
   void Function(T cluster)? onClusterTap,
+}) {
+  return Future.wait(
+    items.map((item) {
+      if (item.isCluster ?? false) {
+        return _clusterMarker(
+          item: item,
+          renderer: renderer,
+          devicePixelRatio: devicePixelRatio,
+          onClusterTap: onClusterTap,
+        );
+      }
+      return pointMarkerBuilder(item);
+    }),
+  );
+}
+
+Future<Marker> _clusterMarker<T extends Clusterable>({
+  required T item,
+  required ClusterRenderer renderer,
+  required double devicePixelRatio,
+  required void Function(T cluster)? onClusterTap,
 }) async {
-  final markers = <Marker>[];
-  for (final item in items) {
-    if (item.isCluster ?? false) {
-      final icon = await renderer.bitmapFor(
-        count: item.pointsSize ?? 0,
-        devicePixelRatio: devicePixelRatio,
-      );
-      markers.add(
-        Marker(
-          markerId: MarkerId(_clusterId(item)),
-          position: LatLng(item.latitude ?? 0, item.longitude ?? 0),
-          icon: icon,
-          // Center the bubble on the cluster location (markers default to a
-          // bottom-anchored pin).
-          anchor: const Offset(0.5, 0.5),
-          onTap: onClusterTap == null ? null : () => onClusterTap(item),
-        ),
-      );
-    } else {
-      markers.add(await pointMarkerBuilder(item));
-    }
-  }
-  return markers;
+  final icon = await renderer.bitmapFor(
+    count: item.pointsSize ?? 0,
+    devicePixelRatio: devicePixelRatio,
+  );
+  return Marker(
+    markerId: MarkerId(_clusterId(item)),
+    position: LatLng(item.latitude ?? 0, item.longitude ?? 0),
+    icon: icon,
+    // Center the bubble on the cluster location (markers default to a
+    // bottom-anchored pin).
+    anchor: const Offset(0.5, 0.5),
+    onTap: onClusterTap == null ? null : () => onClusterTap(item),
+  );
 }
 
 /// Convenience wrapper: query [fluster] for [bounds] at [zoom] and build the

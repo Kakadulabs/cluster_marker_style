@@ -201,6 +201,16 @@ class ClusterStyle {
     ),
   ];
 
+  /// Returns a copy with the given fields replaced.
+  ///
+  /// Omitting [border] or [shadow] *keeps* the current value — that is what a
+  /// missing `copyWith` argument means. To drop one, set the matching
+  /// [removeBorder] / [removeShadow] flag instead:
+  ///
+  /// ```dart
+  /// // ClusterStyle.soft(), minus its drop shadow.
+  /// final crisp = ClusterStyle.soft().copyWith(removeShadow: true);
+  /// ```
   ClusterStyle copyWith({
     ClusterShape? shape,
     List<CountTier>? tiers,
@@ -211,13 +221,23 @@ class ClusterStyle {
     CountFormatter? countFormatter,
     double? minDiameter,
     double? maxDiameter,
+    bool removeBorder = false,
+    bool removeShadow = false,
   }) {
+    assert(
+      !removeBorder || border == null,
+      'Pass either border or removeBorder: true, not both.',
+    );
+    assert(
+      !removeShadow || shadow == null,
+      'Pass either shadow or removeShadow: true, not both.',
+    );
     return ClusterStyle(
       shape: shape ?? this.shape,
       tiers: tiers ?? this.tiers,
       textStyle: textStyle ?? this.textStyle,
-      border: border ?? this.border,
-      shadow: shadow ?? this.shadow,
+      border: removeBorder ? null : (border ?? this.border),
+      shadow: removeShadow ? null : (shadow ?? this.shadow),
       padding: padding ?? this.padding,
       countFormatter: countFormatter ?? this.countFormatter,
       minDiameter: minDiameter ?? this.minDiameter,

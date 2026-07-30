@@ -73,7 +73,8 @@ class DefaultCountFormatter extends CountFormatter {
 
   @override
   bool operator ==(Object other) =>
-      identical(this, other) || other is DefaultCountFormatter && other.cap == cap;
+      identical(this, other) ||
+      other is DefaultCountFormatter && other.cap == cap;
 
   @override
   int get hashCode => cap.hashCode;
