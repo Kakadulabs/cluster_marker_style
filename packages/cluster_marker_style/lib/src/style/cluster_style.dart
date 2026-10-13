@@ -36,7 +36,7 @@ class ClusterStyle {
   // that `const ClusterStyle(...)` remains valid (List.length is not
   // const-evaluable); tier selection relies on a non-empty list.
 
-  /// The shape drawn behind the count. v1 supports [ClusterShape.circle].
+  /// The shape drawn behind the count. See [ClusterShape].
   final ClusterShape shape;
 
   /// Count-aware color/size buckets, expected in ascending [CountTier.upTo]

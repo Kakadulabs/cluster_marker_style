@@ -1,5 +1,6 @@
 import 'dart:math' as math;
 
+import 'cluster_shape.dart';
 import 'cluster_style.dart';
 import 'count_tier.dart';
 
@@ -34,4 +35,15 @@ double sizeFor(ClusterStyle style, int count) {
   final t =
       (math.log(count) / math.log(kSizeCurveReferenceCount)).clamp(0.0, 1.0);
   return style.minDiameter + (style.maxDiameter - style.minDiameter) * t;
+}
+
+/// Returns the width (logical px) of a [ClusterShape.pill] icon that is
+/// [height] tall and whose label lays out [labelWidth] wide.
+///
+/// The label keeps the style's horizontal padding, and at least half the
+/// height of total clearance so it stays clear of the rounded ends. A pill is
+/// never narrower than it is tall, so short labels stay circular.
+double pillWidthFor(ClusterStyle style, double height, double labelWidth) {
+  final clearance = math.max(style.padding.horizontal, height / 2);
+  return math.max(height, labelWidth + clearance);
 }

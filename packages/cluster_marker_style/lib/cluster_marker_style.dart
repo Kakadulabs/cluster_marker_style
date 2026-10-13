@@ -19,7 +19,7 @@ export 'src/style/cluster_style.dart';
 export 'src/style/cluster_text_style.dart';
 export 'src/style/count_formatter.dart';
 export 'src/style/count_tier.dart';
-export 'src/style/tier_selection.dart' show tierFor, sizeFor;
+export 'src/style/tier_selection.dart' show tierFor, sizeFor, pillWidthFor;
 
 // Rendering
 export 'src/render/cluster_renderer.dart';

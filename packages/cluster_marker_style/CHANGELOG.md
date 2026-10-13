@@ -10,6 +10,10 @@
     [`cluster_marker_style_gmcm`](https://pub.dev/packages/cluster_marker_style_gmcm)
   - `cluster_marker_style/cluster_marker_style_fluster.dart` →
     [`cluster_marker_style_fluster`](https://pub.dev/packages/cluster_marker_style_fluster)
+- **New: `ClusterShape.pill`.** A stadium as tall as the circle would be, that
+  widens for long labels instead of shrinking their text. Short labels still
+  render as circles. `pillWidthFor(style, height, labelWidth)` exposes the
+  width rule. Pill icons are wider than tall; markers stay center-anchored.
 - README and pub.dev now show the named styles: a gallery image rendered by the
   package itself (`tool/readme_image_test.dart`).
 - Tests: golden image coverage for the named styles (`--tags golden`), with a

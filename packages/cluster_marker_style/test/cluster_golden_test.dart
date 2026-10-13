@@ -12,7 +12,7 @@ import 'support/style_gallery.dart';
 // Regenerate after an intentional visual change:
 //   flutter test --update-goldens --tags golden
 void main() {
-  testWidgets('named styles render as expected', (tester) async {
+  testWidgets('named styles and shapes render as expected', (tester) async {
     const dpr = 2.0;
     final icons = (await tester.runAsync(
       () => renderGalleryIcons(galleryStyles, devicePixelRatio: dpr),
@@ -26,7 +26,7 @@ void main() {
 
     await expectLater(
       find.byType(StyleGallery),
-      matchesGoldenFile('goldens/named_styles.png'),
+      matchesGoldenFile('goldens/style_gallery.png'),
     );
   });
 }

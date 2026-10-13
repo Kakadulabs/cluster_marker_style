@@ -159,6 +159,17 @@ Each is fully overridable, or build a `ClusterStyle(...)` from scratch with your
 own `tiers`, `ClusterTextStyle`, `ClusterBorder`, `ClusterShadow`, `padding`,
 and `CountFormatter`.
 
+### Shapes
+
+Icons are circles by default. With long labels — a custom `CountFormatter`,
+or large counts at a small size — circles shrink the text to fit. Switch to
+`ClusterShape.pill` to keep the text size and widen the icon instead; short
+labels still render as circles:
+
+```dart
+final style = ClusterStyle.soft().copyWith(shape: ClusterShape.pill);
+```
+
 ## Migrating from 0.3.x
 
 The adapters moved out of this package in 0.4.0. Swap the dependency and the

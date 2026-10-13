@@ -6,6 +6,7 @@ import 'package:flutter/painting.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../cache/cluster_icon_cache.dart';
+import '../style/cluster_shape.dart';
 import '../style/cluster_style.dart';
 import '../style/count_tier.dart';
 import '../style/tier_selection.dart';
@@ -70,35 +71,57 @@ class ClusterRenderer {
     final borderWidth = style.border?.width ?? 0.0;
     final shadowExtent = shadow?.extent ?? 0.0;
 
+    // Lay the label out first: a pill's width depends on it.
+    final textColor = tier.textColor ?? style.textStyle.color;
+    final isPill = style.shape == ClusterShape.pill;
+    final maxTextHeight = math.max(1.0, diameter - style.padding.vertical);
+    // A circle fits the label within its padded interior; a pill only
+    // constrains the height and grows sideways instead.
+    final maxTextWidth = isPill
+        ? double.infinity
+        : math.max(1.0, diameter - style.padding.horizontal);
+    final painter = _layoutLabel(label, textColor, maxTextWidth, maxTextHeight);
+    final shapeWidth =
+        isPill ? pillWidthFor(style, diameter, painter.width) : diameter;
+
     // Logical canvas leaves room for the half of the stroke that extends
     // outward, the shadow spread, and 1px of anti-alias safety.
     final margin = (borderWidth / 2) + shadowExtent + 1;
-    final logicalCanvas = diameter + margin * 2;
-    final physical = math.max(1, (logicalCanvas * devicePixelRatio).round());
+    final logicalWidth = shapeWidth + margin * 2;
+    final logicalHeight = diameter + margin * 2;
+    final physicalWidth =
+        math.max(1, (logicalWidth * devicePixelRatio).round());
+    final physicalHeight =
+        math.max(1, (logicalHeight * devicePixelRatio).round());
 
     final recorder = ui.PictureRecorder();
     final canvas = ui.Canvas(recorder);
     // Author everything in logical units; the scale handles DPI.
     canvas.scale(devicePixelRatio);
 
-    final center = Offset(logicalCanvas / 2, logicalCanvas / 2);
-    final radius = diameter / 2;
+    final center = Offset(logicalWidth / 2, logicalHeight / 2);
+    // A circle is the stadium whose width equals its height, so one rounded
+    // rect draws both shapes.
+    final shape = RRect.fromRectAndRadius(
+      Rect.fromCenter(center: center, width: shapeWidth, height: diameter),
+      Radius.circular(diameter / 2),
+    );
 
     // 1. Shadow.
     if (shadow != null) {
       final paint = ui.Paint()
         ..color = shadow.color
         ..maskFilter = ui.MaskFilter.blur(ui.BlurStyle.normal, shadow.sigma);
-      canvas.drawCircle(center + shadow.offset, radius, paint);
+      canvas.drawRRect(shape.shift(shadow.offset), paint);
     }
 
     // 2. Shape fill.
     final fillPaint = ui.Paint()
       ..color = tier.color
       ..isAntiAlias = true;
-    canvas.drawCircle(center, radius, fillPaint);
+    canvas.drawRRect(shape, fillPaint);
 
-    // 3. Border ring (stroke centered on the circle's edge).
+    // 3. Border ring (stroke centered on the shape's edge).
     if (style.border != null && borderWidth > 0) {
       final borderColor = tier.borderColor ?? style.border!.color;
       final strokePaint = ui.Paint()
@@ -106,14 +129,10 @@ class ClusterRenderer {
         ..strokeWidth = borderWidth
         ..color = borderColor
         ..isAntiAlias = true;
-      canvas.drawCircle(center, radius, strokePaint);
+      canvas.drawRRect(shape, strokePaint);
     }
 
-    // 4. Count text, fitted within the padded interior.
-    final textColor = tier.textColor ?? style.textStyle.color;
-    final maxTextWidth = math.max(1.0, diameter - style.padding.horizontal);
-    final maxTextHeight = math.max(1.0, diameter - style.padding.vertical);
-    final painter = _layoutLabel(label, textColor, maxTextWidth, maxTextHeight);
+    // 4. Count text, centered.
     painter.paint(
       canvas,
       Offset(center.dx - painter.width / 2, center.dy - painter.height / 2),
@@ -123,7 +142,7 @@ class ClusterRenderer {
     final picture = recorder.endRecording();
     ui.Image? image;
     try {
-      image = await picture.toImage(physical, physical);
+      image = await picture.toImage(physicalWidth, physicalHeight);
       final byteData = await image.toByteData(format: ui.ImageByteFormat.png);
       if (byteData == null) {
         throw StateError('Failed to encode cluster icon to PNG bytes.');

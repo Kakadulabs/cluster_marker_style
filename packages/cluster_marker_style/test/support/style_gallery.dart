@@ -9,11 +9,13 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 /// long enough to exercise the shrink-to-fit path.
 const List<int> galleryCounts = <int>[8, 42, 380, 2400, 125000];
 
-/// The named styles, in the order the README describes them.
+/// The named styles in the order the README describes them, plus the pill
+/// shape. Keys are the row labels.
 final Map<String, ClusterStyle> galleryStyles = <String, ClusterStyle>{
-  'soft': ClusterStyle.soft(),
-  'flat': ClusterStyle.flat(),
-  'outlined': ClusterStyle.outlined(),
+  '.soft()': ClusterStyle.soft(),
+  '.flat()': ClusterStyle.flat(),
+  '.outlined()': ClusterStyle.outlined(),
+  'pill shape': ClusterStyle.soft().copyWith(shape: ClusterShape.pill),
 };
 
 /// Renders every [styles] × [galleryCounts] icon through [ClusterRenderer] —
@@ -75,9 +77,9 @@ class StyleGallery extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   SizedBox(
-                    width: 84,
+                    width: 104,
                     child: Text(
-                      '.${entry.key}',
+                      entry.key,
                       style: TextStyle(
                         color: labelColor,
                         fontSize: 15,
@@ -86,9 +88,11 @@ class StyleGallery extends StatelessWidget {
                     ),
                   ),
                   for (final image in entry.value)
+                    // Fits the largest icon (a 125k pill, shadow included) at
+                    // its true size; RawImage would squeeze anything bigger.
                     SizedBox(
-                      width: 96,
-                      height: 96,
+                      width: 140,
+                      height: 120,
                       child: Center(
                         child: RawImage(image: image, scale: devicePixelRatio),
                       ),
