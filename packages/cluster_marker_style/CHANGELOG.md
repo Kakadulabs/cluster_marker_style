@@ -1,3 +1,16 @@
+## 0.4.0
+
+- **Breaking: the adapters are now separate packages.** `cluster_marker_style`
+  no longer depends on `google_maps_cluster_manager_2` or `fluster`, so it no
+  longer forces their version constraints on apps that use neither (or only
+  one). Tree-shaking removed the unused code, but pub still had to resolve both
+  packages for every app. To migrate, swap the dependency and the import; the
+  API is unchanged:
+  - `cluster_marker_style/cluster_marker_style_gmcm.dart` →
+    [`cluster_marker_style_gmcm`](https://pub.dev/packages/cluster_marker_style_gmcm)
+  - `cluster_marker_style/cluster_marker_style_fluster.dart` →
+    [`cluster_marker_style_fluster`](https://pub.dev/packages/cluster_marker_style_fluster)
+
 ## 0.3.0
 
 - **Fix: drop shadows were clipped.** `ClusterShadow.extent` reserved only

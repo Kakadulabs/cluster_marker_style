@@ -1,6 +1,6 @@
-# This package is not (yet) a git repo, so `.gitignore` isn't applied at publish
-# time. Exclude build artifacts, tooling, and local secrets explicitly so the
-# published archive stays small and never carries machine-local files.
+# A .pubignore replaces .gitignore for publishing, so build artifacts, tooling,
+# and local secrets are excluded explicitly here to keep the archive small and
+# free of machine-local files.
 
 # Tooling / IDE
 .idea/

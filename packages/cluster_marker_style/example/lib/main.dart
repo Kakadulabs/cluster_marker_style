@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:cluster_marker_style/cluster_marker_style_gmcm.dart';
+import 'package:cluster_marker_style_gmcm/cluster_marker_style_gmcm.dart';
 import 'package:flutter/material.dart';
 // google_maps_flutter also exports `Cluster` and `ClusterManager` (its native
 // clustering); hide them so the names refer to google_maps_cluster_manager_2.

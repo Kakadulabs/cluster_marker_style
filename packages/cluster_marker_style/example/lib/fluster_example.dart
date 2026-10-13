@@ -4,7 +4,7 @@
 // fluster only computes the clusters; this package styles + caches the icons.
 import 'dart:math';
 
-import 'package:cluster_marker_style/cluster_marker_style_fluster.dart';
+import 'package:cluster_marker_style_fluster/cluster_marker_style_fluster.dart';
 import 'package:fluster/fluster.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';

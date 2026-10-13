@@ -1,0 +1,5 @@
+# Develop against the core package in this repo. Ignored by `dart pub publish`,
+# so the published package resolves `cluster_marker_style` from pub.dev.
+dependency_overrides:
+  cluster_marker_style:
+    path: ../cluster_marker_style

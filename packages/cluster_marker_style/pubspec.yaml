@@ -2,9 +2,9 @@ name: cluster_marker_style
 description: >-
   Beautiful, count-aware, cached cluster marker icons for Google Maps. A
   drop-in styling/rendering layer for any map clustering algorithm.
-version: 0.3.0
+version: 0.4.0
 homepage: https://www.kakadulabs.com
-repository: https://github.com/Kakadulabs/cluster_marker_style
+repository: https://github.com/Kakadulabs/cluster_marker_style/tree/main/packages/cluster_marker_style
 issue_tracker: https://github.com/Kakadulabs/cluster_marker_style/issues
 
 topics:
@@ -21,15 +21,10 @@ dependencies:
   flutter:
     sdk: flutter
 
-  # Core depends on google_maps_flutter only for the BitmapDescriptor type.
+  # Only needed for the BitmapDescriptor type. Clustering-package adapters are
+  # published separately (cluster_marker_style_gmcm, cluster_marker_style_fluster)
+  # so this package never forces a clustering dependency on you.
   google_maps_flutter: ">=2.9.0 <3.0.0"
-
-  # Used ONLY by their respective optional adapter libraries
-  # (cluster_marker_style_gmcm.dart / cluster_marker_style_fluster.dart). The
-  # core library (cluster_marker_style.dart) never imports either, so they are
-  # tree-shaken out of apps that don't use the adapter.
-  google_maps_cluster_manager_2: ">=3.0.0 <4.0.0"
-  fluster: ">=1.2.0 <2.0.0"
 
 dev_dependencies:
   flutter_test:

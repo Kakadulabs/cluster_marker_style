@@ -1,4 +1,4 @@
-import 'package:cluster_marker_style/cluster_marker_style_gmcm.dart';
+import 'package:cluster_marker_style_gmcm/cluster_marker_style_gmcm.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_maps_cluster_manager_2/google_maps_cluster_manager_2.dart';
 // google_maps_flutter also exports a `Cluster` type (native clustering); hide

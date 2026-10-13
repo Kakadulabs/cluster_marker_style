@@ -1,4 +1,4 @@
-import 'package:cluster_marker_style/cluster_marker_style_fluster.dart';
+import 'package:cluster_marker_style_fluster/cluster_marker_style_fluster.dart';
 import 'package:fluster/fluster.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';

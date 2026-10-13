@@ -5,10 +5,10 @@
 /// known — it does not decide which markers group together. Bring your own
 /// clustering algorithm.
 ///
-/// Importing this library does **not** pull in any specific clustering package.
-/// For a clustering adapter, import one of the bridge libraries instead:
-/// `cluster_marker_style_gmcm.dart` (google_maps_cluster_manager_2) or
-/// `cluster_marker_style_fluster.dart` (fluster).
+/// This package does **not** depend on any specific clustering package. For a
+/// ready-made bridge, add one of the adapter packages instead:
+/// `cluster_marker_style_gmcm` (google_maps_cluster_manager_2) or
+/// `cluster_marker_style_fluster` (fluster).
 library;
 
 // Style (data layer)

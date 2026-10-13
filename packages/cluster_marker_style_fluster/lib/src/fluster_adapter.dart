@@ -1,9 +1,8 @@
 import 'dart:ui' show Offset;
 
+import 'package:cluster_marker_style/cluster_marker_style.dart';
 import 'package:fluster/fluster.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-
-import '../render/cluster_renderer.dart';
 
 /// Builds a [Marker] for a single (non-cluster) fluster point.
 typedef FlusterPointMarkerBuilder<T extends Clusterable> = Future<Marker>

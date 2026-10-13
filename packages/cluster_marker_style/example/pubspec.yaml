@@ -12,9 +12,14 @@ dependencies:
 
   cupertino_icons: ^1.0.8
 
-  # The package being demonstrated.
+  # The packages being demonstrated: the core plus one adapter per clustering
+  # package used below.
   cluster_marker_style:
     path: ../
+  cluster_marker_style_gmcm:
+    path: ../../cluster_marker_style_gmcm
+  cluster_marker_style_fluster:
+    path: ../../cluster_marker_style_fluster
 
   # A clustering algorithm + the map widget. The package styles the icons; it
   # does not do the clustering or own the map.
@@ -30,3 +35,9 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+
+# The adapters depend on the published cluster_marker_style; point them at the
+# local core too so the example always runs against this checkout.
+dependency_overrides:
+  cluster_marker_style:
+    path: ../

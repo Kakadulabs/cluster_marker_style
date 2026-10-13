@@ -1,11 +1,10 @@
 import 'dart:ui' show Offset;
 
+import 'package:cluster_marker_style/cluster_marker_style.dart';
 import 'package:google_maps_cluster_manager_2/google_maps_cluster_manager_2.dart';
 // google_maps_flutter also exports a `Cluster` type (native clustering); hide
 // it so `Cluster` unambiguously means the cluster-manager's cluster.
 import 'package:google_maps_flutter/google_maps_flutter.dart' hide Cluster;
-
-import '../render/cluster_renderer.dart';
 
 /// A function with the signature `google_maps_cluster_manager_2` expects for its
 /// `markerBuilder`.
