@@ -21,3 +21,6 @@ example/android/local.properties
 example/android/secrets.properties
 example/ios/Pods/
 example/ios/.symlinks/
+
+# README demo GIF: loaded from GitHub, not needed in the archive.
+doc/demo.gif

@@ -9,6 +9,8 @@ using your clustering package of choice (e.g.
 this package supplies the cluster icon — rendered sharply, cached, and
 good-looking by default.
 
+![Panning and zooming a map of 3,000 clustered points, switching between the soft, flat and outlined styles](https://raw.githubusercontent.com/Kakadulabs/cluster_marker_style/main/packages/cluster_marker_style/doc/demo.gif)
+
 ![The soft, flat and outlined styles at counts from 8 to 125k, on light and dark map backgrounds](https://raw.githubusercontent.com/Kakadulabs/cluster_marker_style/main/packages/cluster_marker_style/doc/named_styles.png)
 
 <sub>Rendered by the package itself — regenerate with
