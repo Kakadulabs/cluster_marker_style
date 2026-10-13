@@ -7,6 +7,10 @@ homepage: https://www.kakadulabs.com
 repository: https://github.com/Kakadulabs/cluster_marker_style/tree/main/packages/cluster_marker_style
 issue_tracker: https://github.com/Kakadulabs/cluster_marker_style/issues
 
+screenshots:
+  - description: The soft, flat and outlined styles across counts, on light and dark backgrounds.
+    path: doc/named_styles.png
+
 topics:
   - maps
   - google-maps

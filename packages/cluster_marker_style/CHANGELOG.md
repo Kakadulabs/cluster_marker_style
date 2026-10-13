@@ -10,6 +10,11 @@
     [`cluster_marker_style_gmcm`](https://pub.dev/packages/cluster_marker_style_gmcm)
   - `cluster_marker_style/cluster_marker_style_fluster.dart` →
     [`cluster_marker_style_fluster`](https://pub.dev/packages/cluster_marker_style_fluster)
+- README and pub.dev now show the named styles: a gallery image rendered by the
+  package itself (`tool/readme_image_test.dart`).
+- Tests: golden image coverage for the named styles (`--tags golden`), with a
+  small pixel tolerance so anti-aliasing differences between platforms don't
+  fail it.
 
 ## 0.3.0
 

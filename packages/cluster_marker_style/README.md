@@ -9,8 +9,10 @@ using your clustering package of choice (e.g.
 this package supplies the cluster icon — rendered sharply, cached, and
 good-looking by default.
 
-> _GIF placeholder: clean count bubbles staying smooth while panning a dense map._
-> Record it from the included [`example/`](example/) app.
+![The soft, flat and outlined styles at counts from 8 to 125k, on light and dark map backgrounds](https://raw.githubusercontent.com/Kakadulabs/cluster_marker_style/main/packages/cluster_marker_style/doc/named_styles.png)
+
+<sub>Rendered by the package itself — regenerate with
+`flutter test --update-goldens tool/readme_image_test.dart`.</sub>
 
 ## The problem
 

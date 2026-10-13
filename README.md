@@ -27,4 +27,8 @@ flutter analyze
 flutter test
 ```
 
+Golden images in the core are regenerated with
+`flutter test --update-goldens --tags golden`, and the README gallery with
+`flutter test --update-goldens tool/readme_image_test.dart`.
+
 Publish the core first when an adapter needs a new core version.
