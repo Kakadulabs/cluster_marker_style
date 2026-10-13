@@ -1,0 +1,64 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  check:
+    name: ${{ matrix.package }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        package:
+          - cluster_marker_style
+          - cluster_marker_style_gmcm
+          - cluster_marker_style_fluster
+    defaults:
+      run:
+        working-directory: packages/${{ matrix.package }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 3.38.3
+          channel: stable
+          cache: true
+      - run: flutter pub get
+      - run: dart format --output=none --set-exit-if-changed .
+      - run: flutter analyze
+      # Goldens were generated on Windows; they run in their own job below.
+      - run: flutter test --exclude-tags golden
+      - run: dart pub publish --dry-run
+
+  example:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: packages/cluster_marker_style/example
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 3.38.3
+          channel: stable
+          cache: true
+      - run: flutter pub get
+      - run: flutter analyze
+
+  goldens:
+    runs-on: windows-latest
+    defaults:
+      run:
+        working-directory: packages/cluster_marker_style
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 3.38.3
+          channel: stable
+          cache: true
+      - run: flutter pub get
+      - run: flutter test --tags golden

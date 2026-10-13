@@ -1,0 +1,3 @@
+tags:
+  # Pixel comparisons; see test/cluster_golden_test.dart.
+  golden:
