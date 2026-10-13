@@ -61,6 +61,33 @@ class ClusterRenderer {
     );
   }
 
+  /// Renders and caches the icons for [counts] ahead of time, so the first
+  /// frame of the map doesn't wait on rasterization and icons don't pop in.
+  ///
+  /// Call it once you know the device pixel ratio — for example from
+  /// `didChangeDependencies` — before the clustered markers are first built:
+  ///
+  /// ```dart
+  /// renderer.precache(
+  ///   counts: List.generate(99, (i) => i + 2), // every cluster up to 100
+  ///   devicePixelRatio: MediaQuery.of(context).devicePixelRatio,
+  /// );
+  /// ```
+  ///
+  /// Counts that produce the same icon are rendered once. Icons beyond the
+  /// cache's [ClusterIconCache.maxSize] evict earlier ones, so keep [counts]
+  /// within it.
+  Future<void> precache({
+    required Iterable<int> counts,
+    required double devicePixelRatio,
+  }) {
+    return Future.wait(
+      counts.map(
+        (count) => bitmapFor(count: count, devicePixelRatio: devicePixelRatio),
+      ),
+    );
+  }
+
   Future<BitmapDescriptor> _render({
     required CountTier tier,
     required double diameter,

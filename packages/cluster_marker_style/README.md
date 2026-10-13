@@ -140,6 +140,16 @@ ClusterManager<Place>(
 );
 ```
 
+To avoid icons popping in on the first frame, warm the cache once the device
+pixel ratio is known (e.g. in `didChangeDependencies`):
+
+```dart
+renderer.precache(
+  counts: List.generate(99, (i) => i + 2), // every cluster up to 100
+  devicePixelRatio: MediaQuery.of(context).devicePixelRatio,
+);
+```
+
 Omit `tiers` entirely to get the polished default ramp. See the runnable
 [`example/`](example/) app, which clusters a few thousand points and switches
 between styles live. (Add your own Google Maps API key — placeholders are in

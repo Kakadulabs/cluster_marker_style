@@ -14,6 +14,8 @@
   widens for long labels instead of shrinking their text. Short labels still
   render as circles. `pillWidthFor(style, height, labelWidth)` exposes the
   width rule. Pill icons are wider than tall; markers stay center-anchored.
+- **New: `ClusterRenderer.precache(counts:, devicePixelRatio:)`** renders icons
+  ahead of time so they don't pop in on the map's first frame.
 - README and pub.dev now show the named styles: a gallery image rendered by the
   package itself (`tool/readme_image_test.dart`).
 - Tests: golden image coverage for the named styles (`--tags golden`), with a

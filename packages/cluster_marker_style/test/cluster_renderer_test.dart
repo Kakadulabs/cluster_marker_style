@@ -1,4 +1,5 @@
 import 'package:cluster_marker_style/cluster_marker_style.dart';
+import 'package:flutter/painting.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -38,6 +39,36 @@ void main() {
           expect(descriptor, isA<BitmapDescriptor>());
         }
       }
+    });
+  });
+
+  testWidgets('precache fills the cache so later lookups are hits',
+      (tester) async {
+    await tester.runAsync(() async {
+      final renderer = ClusterRenderer(ClusterStyle.flat());
+      await renderer.precache(counts: [2, 3, 4], devicePixelRatio: 2);
+      expect(renderer.cache.length, 3);
+
+      // A precached count is served from the cache.
+      await renderer.bitmapFor(count: 3, devicePixelRatio: 2);
+      expect(renderer.cache.length, 3);
+    });
+  });
+
+  testWidgets('precache renders shared icons once', (tester) async {
+    await tester.runAsync(() async {
+      // Above the cap every count shares the "9+" label, and the pinned size
+      // fixes the diameter, so all of these are one icon.
+      final renderer = ClusterRenderer(
+        ClusterStyle.flat(
+          countFormatter: const DefaultCountFormatter(cap: 9),
+          tiers: const [
+            CountTier(upTo: 1 << 30, color: Color(0xFF000000), size: 40),
+          ],
+        ),
+      );
+      await renderer.precache(counts: [10, 11, 12, 10], devicePixelRatio: 2);
+      expect(renderer.cache.length, 1);
     });
   });
 }
