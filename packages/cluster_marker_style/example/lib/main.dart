@@ -67,7 +67,12 @@ class _ClusterDemoPageState extends State<ClusterDemoPage> {
   StyleChoice _choice = StyleChoice.soft;
   // The renderer is swapped when the style changes. clusterMarkerBuilder reads
   // it dynamically, so switching styles needs no map rebuild.
-  late ClusterRenderer _renderer = ClusterRenderer(_choice.build());
+  //
+  // All renderers share one cache. Keys include the style, so icons never mix
+  // across styles, and switching back to a style reuses its rendered icons.
+  final ClusterIconCache _cache = ClusterIconCache();
+  late ClusterRenderer _renderer =
+      ClusterRenderer(_choice.build(), cache: _cache);
   double _devicePixelRatio = 2;
 
   @override
@@ -93,7 +98,7 @@ class _ClusterDemoPageState extends State<ClusterDemoPage> {
   void _switchStyle(StyleChoice choice) {
     setState(() {
       _choice = choice;
-      _renderer = ClusterRenderer(choice.build()); // fresh, empty cache
+      _renderer = ClusterRenderer(choice.build(), cache: _cache);
     });
     _manager.updateMap(); // re-style the visible clusters
   }

@@ -15,12 +15,18 @@ class ClusterTextStyle {
     this.minFontSize = 10.0,
     this.maxFontSize = 22.0,
     this.letterSpacing = 0.0,
+    this.textDirection = TextDirection.ltr,
   });
 
   /// Default text color. A tier's [CountTier.textColor] overrides this.
   final Color color;
 
   /// Optional font family. Null uses the platform default.
+  ///
+  /// Icons are drawn with whatever fonts are loaded when they are rendered, and
+  /// then cached. A family that hasn't loaded yet (e.g. a runtime-fetched
+  /// font) silently falls back and stays that way in the cache, so make sure
+  /// it has loaded before the first icon is built.
   final String? fontFamily;
 
   /// Font weight. Semibold by default for legibility at small sizes.
@@ -35,6 +41,11 @@ class ClusterTextStyle {
   /// Letter spacing (logical px).
   final double letterSpacing;
 
+  /// Direction the label is laid out in. Digits read the same either way;
+  /// set [TextDirection.rtl] when a custom `CountFormatter` emits right-to-left
+  /// text, so its characters and punctuation order correctly.
+  final TextDirection textDirection;
+
   ClusterTextStyle copyWith({
     Color? color,
     String? fontFamily,
@@ -42,6 +53,7 @@ class ClusterTextStyle {
     double? minFontSize,
     double? maxFontSize,
     double? letterSpacing,
+    TextDirection? textDirection,
   }) {
     return ClusterTextStyle(
       color: color ?? this.color,
@@ -50,6 +62,7 @@ class ClusterTextStyle {
       minFontSize: minFontSize ?? this.minFontSize,
       maxFontSize: maxFontSize ?? this.maxFontSize,
       letterSpacing: letterSpacing ?? this.letterSpacing,
+      textDirection: textDirection ?? this.textDirection,
     );
   }
 
@@ -62,7 +75,8 @@ class ClusterTextStyle {
           other.fontWeight == fontWeight &&
           other.minFontSize == minFontSize &&
           other.maxFontSize == maxFontSize &&
-          other.letterSpacing == letterSpacing;
+          other.letterSpacing == letterSpacing &&
+          other.textDirection == textDirection;
 
   @override
   int get hashCode => Object.hash(
@@ -72,5 +86,6 @@ class ClusterTextStyle {
         minFontSize,
         maxFontSize,
         letterSpacing,
+        textDirection,
       );
 }

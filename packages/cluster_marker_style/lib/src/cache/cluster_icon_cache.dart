@@ -142,6 +142,9 @@ class ClusterIconCache {
   /// Number of cached entries.
   int get length => _entries.length;
 
-  /// Drops all cached icons. Call when the style changes at runtime.
+  /// Drops all cached icons, e.g. to free memory once a map is gone.
+  ///
+  /// Not needed when the style changes: keys include the style, so one cache
+  /// can safely serve several styles (and keep each one's icons warm).
   void clear() => _entries.clear();
 }

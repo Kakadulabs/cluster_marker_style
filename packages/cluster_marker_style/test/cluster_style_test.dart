@@ -22,6 +22,19 @@ void main() {
     });
   });
 
+  group('ClusterTextStyle.textDirection', () {
+    test('defaults to left-to-right', () {
+      expect(const ClusterTextStyle().textDirection, TextDirection.ltr);
+    });
+
+    test('takes part in equality, so RTL icons get their own cache entry', () {
+      const ltr = ClusterTextStyle();
+      final rtl = ltr.copyWith(textDirection: TextDirection.rtl);
+      expect(rtl, isNot(ltr));
+      expect(rtl.copyWith(textDirection: TextDirection.ltr), ltr);
+    });
+  });
+
   group('ClusterStyle.copyWith clearing optional fields', () {
     test('omitting border/shadow keeps the current values', () {
       final base = ClusterStyle.soft();

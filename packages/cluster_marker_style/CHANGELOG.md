@@ -16,6 +16,13 @@
   width rule. Pill icons are wider than tall; markers stay center-anchored.
 - **New: `ClusterRenderer.precache(counts:, devicePixelRatio:)`** renders icons
   ahead of time so they don't pop in on the map's first frame.
+- **New: `ClusterTextStyle.textDirection`** (default `TextDirection.ltr`, the
+  previous hardcoded value) for custom formatters that emit right-to-left text.
+- Docs: one `ClusterIconCache` can be shared across renderers of different
+  styles (keys include the style); `clear()` is not needed on a style change.
+  The example now does this, so switching back to a style reuses its icons.
+- Docs: custom fonts must be loaded before the first icon renders, since the
+  fallback rendering would be cached.
 - README and pub.dev now show the named styles: a gallery image rendered by the
   package itself (`tool/readme_image_test.dart`).
 - Tests: golden image coverage for the named styles (`--tags golden`), with a

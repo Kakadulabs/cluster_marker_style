@@ -17,7 +17,9 @@ import '../style/tier_selection.dart';
 ///
 /// Pass a [ClusterIconCache] to avoid re-rasterizing identical icons as the
 /// camera moves — this is what keeps a dense map smooth. Reuse one renderer
-/// instance for the lifetime of a style.
+/// instance for the lifetime of a style. To switch styles without losing
+/// rendered icons, give each renderer the same [ClusterIconCache]; keys include
+/// the style, so icons never mix.
 class ClusterRenderer {
   ClusterRenderer(this.style, {ClusterIconCache? cache})
       : cache = cache ?? ClusterIconCache();
@@ -203,7 +205,7 @@ class ClusterRenderer {
             height: 1.0,
           ),
         ),
-        textDirection: TextDirection.ltr,
+        textDirection: ts.textDirection,
         textAlign: TextAlign.center,
         maxLines: 1,
       )..layout();
